@@ -17,7 +17,8 @@ namespace MOONG
 		const enum CODE
 		{
 			SUCCESS = 0,
-			FUNCTION_CALL_FAILED = 1
+			FUNCTION_CALL_FAILED = 1,
+			BAD_ALLOC = 2
 		};
 	}
 
