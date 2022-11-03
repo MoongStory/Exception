@@ -10,32 +10,113 @@
 #include <iostream>
 #include <Windows.h>
 
+// https://github.com/MoongStory/ConvertDataType
+#include "../../ConvertDataType/ConvertDataType/ConvertDataType.h"
+
 namespace MOONG
 {
-	namespace EXCEPTION
-	{
-		const enum CODE
-		{
-			SUCCESS = 0,
-			FUNCTION_CALL_FAILED = 1,
-			BAD_ALLOC = 2
-		};
-	}
-
 	class Exception
 	{
 	public:
 	protected:
 	private:
-		int code;
-		std::string reason;
-		DWORD last_error;
 
 	public:
-		Exception(const int code, const std::string reason, const DWORD last_error = 0);
+		virtual const std::string getReason() = 0;
+	protected:
+	private:
+	};
 
-		const int getCode();
-		const std::string getReason();
+
+
+	template <typename T> class ExceptionFunctionCallFailed : public Exception
+	{
+	public:
+	protected:
+	private:
+		std::string function_name;
+		T error_code;
+		bool isGetLastError;
+
+	public:
+		ExceptionFunctionCallFailed(const std::string function_name, T error_code, bool isGetLastError = true) : function_name(function_name), error_code(error_code), isGetLastError(isGetLastError)
+		{
+		}
+
+		const std::string getReason()
+		{
+			return "정의되지 않은 자료형입니다. 클래스 템플릿 특수화를 추가해주세요.";
+		}
+	protected:
+	private:
+	};
+
+	template <> class ExceptionFunctionCallFailed<DWORD> : public Exception
+	{
+	public:
+	protected:
+	private:
+		std::string function_name;
+		DWORD error_code;
+		bool isGetLastError;
+
+	public:
+		ExceptionFunctionCallFailed(const std::string function_name, DWORD error_code, bool isGetLastError = true) : function_name(function_name), error_code(error_code), isGetLastError(isGetLastError)
+		{
+		}
+
+		const std::string getReason()
+		{
+			std::string reason = std::string("[") + this->function_name + std::string("] function call failed.");
+
+			if (this->isGetLastError == true)
+			{
+				reason += std::string(" GetLastError[");
+			}
+			else
+			{
+				reason += std::string(" ErrorCode[");
+			}
+
+			reason += MOONG::ConvertDataType::dword_to_string(this->error_code) + std::string("]");
+
+			return reason;
+		}
+	protected:
+	private:
+	};
+
+	template <> class ExceptionFunctionCallFailed<int> : public Exception
+	{
+	public:
+	protected:
+	private:
+		std::string function_name;
+		int error_code;
+		bool isGetLastError;
+
+	public:
+		ExceptionFunctionCallFailed(const std::string function_name, int error_code, bool isGetLastError = true) : function_name(function_name), error_code(error_code), isGetLastError(isGetLastError)
+		{
+		}
+
+		const std::string getReason()
+		{
+			std::string reason = std::string("[") + this->function_name + std::string("] function call failed.");
+
+			if (this->isGetLastError == true)
+			{
+				reason += std::string(" GetLastError[");
+			}
+			else
+			{
+				reason += std::string(" ErrorCode[");
+			}
+
+			reason += MOONG::ConvertDataType::int_to_string(this->error_code) + std::string("]");
+
+			return reason;
+		}
 	protected:
 	private:
 	};
