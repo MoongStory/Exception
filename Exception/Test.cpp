@@ -4,17 +4,20 @@ void PrintResult(MOONG::Exception& exception);
 
 int main()
 {
-	MOONG::ExceptionFunctionCallFailed<DWORD> exception_1("function_name", 123);
+	MOONG::ExceptionFunctionCallFailed<DWORD> exception_1("함수 이름", 123);
 	PrintResult(exception_1);
 
-	MOONG::ExceptionFunctionCallFailed<DWORD> exception_2("function_name", 321, false);
+	MOONG::ExceptionFunctionCallFailed<DWORD> exception_2("함수 이름", 321, false);
 	PrintResult(exception_2);
 
-	MOONG::ExceptionFunctionCallFailed<int> exception_3("function_name", 123);
+	MOONG::ExceptionFunctionCallFailed<int> exception_3("함수 이름", 123);
 	PrintResult(exception_3);
 
-	MOONG::ExceptionFunctionCallFailed<char> exception_4("function_name", 'a');
+	MOONG::ExceptionFunctionCallFailed<char> exception_4("함수 이름", 'a');
 	PrintResult(exception_4);
+
+	MOONG::ExceptionBadAlloc exception_5;
+	PrintResult(exception_5);
 
 	return 0;
 }

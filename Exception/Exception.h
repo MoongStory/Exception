@@ -45,7 +45,7 @@ namespace MOONG
 
 		const std::string getReason()
 		{
-			return "정의되지 않은 자료형입니다. 클래스 템플릿 특수화를 추가해주세요.";
+			return "정의되지 않은 자료형. 클래스 템플릿 특수화를 추가해주세요.";
 		}
 	protected:
 	private:
@@ -67,7 +67,7 @@ namespace MOONG
 
 		const std::string getReason()
 		{
-			std::string reason = std::string("[") + this->function_name + std::string("] function call failed.");
+			std::string reason = std::string("[") + this->function_name + std::string("] 함수 호출 실패.");
 
 			if (this->isGetLastError == true)
 			{
@@ -102,7 +102,7 @@ namespace MOONG
 
 		const std::string getReason()
 		{
-			std::string reason = std::string("[") + this->function_name + std::string("] function call failed.");
+			std::string reason = std::string("[") + this->function_name + std::string("] 함수 호출 실패.");
 
 			if (this->isGetLastError == true)
 			{
@@ -116,6 +116,21 @@ namespace MOONG
 			reason += MOONG::ConvertDataType::int_to_string(this->error_code) + std::string("]");
 
 			return reason;
+		}
+	protected:
+	private:
+	};
+
+	class ExceptionBadAlloc : public Exception
+	{
+	public:
+	protected:
+	private:
+
+	public:
+		const std::string getReason()
+		{
+			return "메모리 할당 실패.";
 		}
 	protected:
 	private:
